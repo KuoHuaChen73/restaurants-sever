@@ -9,16 +9,20 @@ const Restaurant = db.Restaurants
 app.engine('.hbs', engine({ extname: '.hbs'}))
 app.set('view engine', '.hbs')
 app.set('views', './views')
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   res.render('index')
 })
 
 app.get('/restaurants', (req, res) => {
-  return Restaurant.findAll()
+  return Restaurant.findAll({
+    attributes: ['id', 'name', 'image'],
+    raw: true
+  })
     .then((restaurants) => {
       console.log(restaurants)
-      return res.send({ restaurants })
+      return res.render('restaurants', { restaurants })
     })
     .catch((err) => res.status(422).json(err))
 })
