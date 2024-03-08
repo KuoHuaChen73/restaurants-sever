@@ -3,7 +3,7 @@ const app = express()
 const port = 3000
 
 const db = require('./models')
-const Restaurant = db.Restaurant
+const Restaurant = db.Restaurants
 
 app.get('/', (req, res) => {
   res.send('hello word')
@@ -11,7 +11,10 @@ app.get('/', (req, res) => {
 
 app.get('/restaurants', (req, res) => {
   return Restaurant.findAll()
-    .then((restaurants) => res.send({ restaurants }))
+    .then((restaurants) => {
+      console.log(restaurants)
+      return res.send({ restaurants })
+    })
     .catch((err) => res.status(422).json(err))
 })
 

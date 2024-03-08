@@ -3,6 +3,37 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
+  const Restaurants = sequelize.define('Restaurants', {
+      name_en: {
+        type: DataTypes.STRING
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      google_map: {
+        type: DataTypes.STRING
+      },
+      rating: {
+        type: DataTypes.FLOAT
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: false
+      }
+  })
   class Restaurant extends Model {
     /**
      * Helper method for defining associations.
@@ -19,5 +50,5 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Restaurant',
   });
-  return Restaurant;
+  return Restaurants;
 };
