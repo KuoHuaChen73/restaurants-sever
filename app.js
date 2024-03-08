@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 app.get('/restaurants', (req, res) => {
   return Restaurant.findAll({
-    attributes: ['id', 'name', 'image'],
+    attributes: ['id', 'name', 'image', 'category', 'rating'],
     raw: true
   })
     .then((restaurants) => {
