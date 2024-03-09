@@ -20,10 +20,7 @@ app.get('/restaurants', (req, res) => {
     attributes: ['id', 'name', 'image', 'category', 'rating'],
     raw: true
   })
-    .then((restaurants) => {
-      console.log(restaurants)
-      return res.render('restaurants', { restaurants })
-    })
+    .then((restaurants) => res.render('restaurants', { restaurants }))
     .catch((err) => res.status(422).json(err))
 })
 
@@ -32,7 +29,13 @@ app.get('/restaurants/new', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res) => {
-  res.send(`restaurant: ${req.params.id}`)
+  const id = req.params.id
+
+  return Restaurant.findByPk(id, {
+    raw: true
+  })
+  .then((restaurant) => res.render('restaurant', { restaurant }))
+  .catch((err) => console.log(err))
 })
 
 app.get('/restaurants/:id/edit', (req, res) => {
