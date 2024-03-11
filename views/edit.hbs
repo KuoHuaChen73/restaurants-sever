@@ -1,0 +1,26 @@
+<header>
+  <!-- navigation -->
+  <nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
+          width="30" height="30" class="d-inline-block align-top" alt="好。吃">
+        我的餐廳清單
+      </a>
+    </div>
+  </nav>
+
+  <div class="banner"></div>
+</header>
+
+
+
+<form action="/restaurants/{{restaurant.id}}?_method=PUT" method="POST">
+  <input type="text" placeholder="餐廳名稱" name="name" value="{{restaurant.name}}">
+  <input type="text" placeholder="餐廳類別" name="category" value="{{restaurant.category}}">
+  <input type="text" placeholder="餐廳地址" name="location" value="{{restaurant.location}}">
+  <input type="text" placeholder="餐廳電話" name="phone" value="{{restaurant.phone}}">
+  <input type="number" placeholder="餐廳評分" name="rating" value="{{restaurant.rating}}">
+  <input type="text" placeholder="描述" name="description" value="{{restaurant.description}}">
+  <button type="submit">edit</button>
+</form>
