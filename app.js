@@ -10,6 +10,7 @@ app.engine('.hbs', engine({ extname: '.hbs'}))
 app.set('view engine', '.hbs')
 app.set('views', './views')
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true}))
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -25,7 +26,7 @@ app.get('/restaurants', (req, res) => {
 })
 
 app.get('/restaurants/new', (req, res) => {
-  res.send('new restaurant')
+  res.render('new')
 })
 
 app.get('/restaurants/:id', (req, res) => {
@@ -43,7 +44,28 @@ app.get('/restaurants/:id/edit', (req, res) => {
 })
 
 app.post('/restaurants', (req, res) => {
-  res.send('add restaurant')
+  const name = req.body.name
+  const name_en = req.body.name_en
+  const category = req.body.category
+  const image = req.body.image
+  const location = req.body.location
+  const phone = req.body.phone
+  const google_map = req.body.google_map
+  const rating = Number(req.body.rating)
+  const description = req.body.description
+  return Restaurant.create({
+    name,
+    name_en,
+    category,
+    image,
+    location,
+    phone,
+    google_map,
+    rating,
+    description
+  })
+  .then(() => res.redirect('./restaurants'))
+  .catch((err) => console.log(err))
 })
 
 app.put('/restaurants/:id', (req, res) => {

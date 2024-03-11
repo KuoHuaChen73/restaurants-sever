@@ -4,6 +4,9 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   const Restaurants = sequelize.define('Restaurants', {
+    name: {
+      type: DataTypes.STRING
+    },
       name_en: {
         type: DataTypes.STRING
       },
