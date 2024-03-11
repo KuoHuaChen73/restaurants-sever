@@ -2,7 +2,7 @@
   <!-- navigation -->
   <nav class="navbar navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="/restaurants">
         <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png"
           width="30" height="30" class="d-inline-block align-top" alt="好。吃">
         我的餐廳清單
@@ -17,12 +17,9 @@
 
 <form action="/restaurants" method="POST">
 <input type="text" placeholder="餐廳名稱" name="name">
-<input type="text" placeholder="餐廳名稱_英文" name="name_en">
 <input type="text" placeholder="餐廳類別" name="category">
-<input type="text" placeholder="餐廳圖片(網址)" name="image">
 <input type="text" placeholder="餐廳地址" name="location">
 <input type="text" placeholder="餐廳電話" name="phone">
-<input type="text" placeholder="Google map網址" name="google_map">
 <input type="number" placeholder="餐廳評分" name="rating">
 <input type="text" placeholder="描述" name="description">
 <button type="submit">create</button>
