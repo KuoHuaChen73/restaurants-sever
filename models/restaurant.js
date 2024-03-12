@@ -5,14 +5,16 @@ const {
 module.exports = (sequelize, DataTypes) => {
   const Restaurants = sequelize.define('Restaurants', {
     name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
       name_en: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
       },
       category: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       image: {
         type: DataTypes.STRING,
@@ -20,21 +22,22 @@ module.exports = (sequelize, DataTypes) => {
       },
       location: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       phone: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       google_map: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        allowNull: true
       },
       rating: {
         type: DataTypes.FLOAT
       },
       description: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.TEXT,
+        allowNull: true
       }
   })
   class Restaurant extends Model {
