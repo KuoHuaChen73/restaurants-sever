@@ -51,7 +51,41 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Restaurant.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+      name_en: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      google_map: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      rating: {
+        type: DataTypes.FLOAT
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      }
   }, {
     sequelize,
     modelName: 'Restaurant',

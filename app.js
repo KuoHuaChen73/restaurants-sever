@@ -60,6 +60,7 @@ app.post('/restaurants', (req, res) => {
   const name = req.body.name
   const category = req.body.category
   const location = req.body.location
+  const image = req.body.image
   const phone = req.body.phone
   const rating = Number(req.body.rating) // 因為資料庫設定rating欄位需放入數字，使用者在網頁輸入的值，傳送過來為字串，所以強制將字串更改為數字
   const description = req.body.description
@@ -68,6 +69,7 @@ app.post('/restaurants', (req, res) => {
     category,
     location,
     phone,
+    image,
     rating,
     description
   })
