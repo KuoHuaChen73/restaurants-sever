@@ -8,7 +8,8 @@ const { engine } = require('express-handlebars')
 const methodOverride = require('method-override')
 
 const router = require('./routes')
-
+const messageHandler = require('./middlewares/message-handler')
+const errorHandler = require('./middlewares/error-handler')
 // 宣告樣板引擎為express-handlebars
 app.engine('.hbs', engine({ extname: '.hbs'}))
 app.set('view engine', '.hbs')
@@ -22,7 +23,9 @@ app.use(session({
   saveUninitialized:false
 }))
 app.use(flash())
+app.use(messageHandler)
 app.use(router)
+app.use(errorHandler)
 
 
 

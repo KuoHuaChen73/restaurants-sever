@@ -12,12 +12,7 @@
 
   <div class="banner"></div>
 </header>
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
-{{#if error}}
-<div>{{error}}</div>
-{{/if}}
+{{> message}}
 
 <h1 class="mb-1 restaurant-show-title">{{restaurant.name}}</h1>
 <div class="container">

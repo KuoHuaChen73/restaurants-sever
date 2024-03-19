@@ -41,12 +41,7 @@
 <div class="d-flex justify-content-center">
   <a href="/restaurants/new">create</a>
 </div>
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
-{{#if error}}
-<div>{{error}}</div>
-{{/if}}
+{{> message}}
 
 <!-- restaurant list -->
 <div class="container mt-5">

@@ -6,8 +6,7 @@ const router = express.Router()
 const db = require('../models')
 const Restaurant = db.Restaurant
 
-router.get('/', (req, res) => {
-  try {
+router.get('/', (req, res, next) => {
     const sort = req.query.sort || '1'
     console.log(sort)
     return Restaurant.findAll({
@@ -29,71 +28,47 @@ router.get('/', (req, res) => {
           filterRestaurants.push(...restaurants)
         }
         if (filterRestaurants.length !== 0) {
-          res.render('restaurants', { restaurants: filterRestaurants, message: req.flash('success'), error: req.flash('error') })
+          res.render('restaurants', { restaurants: filterRestaurants })
         }
-        else res.render('restaurants', { restaurants, message: req.flash('success') })
+        else res.render('restaurants', { restaurants })
       })
       .catch((error) => {
-        console.error(error)
-        req.flash('error', '資料取得失敗:(')
-        return res.redirect('back')
+        error.errorMessage = '資料取得失敗:('
+        next(error)
       })
-  } catch (error) {
-      console.error(error)
-      req.flash('error', '資料取得失敗:(')
-      return res.redirect('back')
-  }
 })
 
 // 渲染建立餐廳頁面
 router.get('/new', (req, res) => {
-  res.render('new', { error: req.flash('error')})
+  res.render('new')
 })
 //  渲染餐廳細節頁面
-router.get('/:id', (req, res) => {
-  try {
+router.get('/:id', (req, res, next) => {
     const id = req.params.id
     return Restaurant.findByPk(id, {
       raw: true
     })
-    .then((restaurant) => res.render('restaurant', { restaurant, message: req.flash('success'), error: req.flash('error') }))
+    .then((restaurant) => res.render('restaurant', { restaurant }))
     .catch((error) => {
-      console.error(error)
-      req.flash('error', '資料取得失敗:(')
-      return res.redirect('back')
+      error.errorMessage = '資料取得失敗:('
+      next(error)
     })
-  } catch (error) {
-    console.error(error)
-    req.flash('error', '資料取得失敗:(')
-    return res.redirect('back')
-  }
-
-  
 })
 // 渲染餐廳編輯頁面
-router.get('/edit', (req, res) => {
-  try {
+router.get('/:id/edit', (req, res, next) => {
     const id = req.params.id
     return Restaurant.findByPk(id, {
       raw: true
     })
-    .then((restaurant) => res.render('edit', {restaurant, error: req.flash('error')}))
+    .then((restaurant) => res.render('edit', { restaurant }))
     .catch((error) => {
-      console.error(error)
-      req.flash('error', '伺服器錯誤:(')
-      return res.redirect('back')
-    })
-  } catch (error) {
-      console.error(error)
-      req.flash('error', '伺服器錯誤:(')
-      return res.redirect('back')
-  }
-  
+      error.errorMessage = '資料取得失敗:('
+      next(error)
+    }) 
 })
 
 // 將create頁面傳送過來的資料建立在資料庫裡，然後再導向首頁
-router.post('/', (req, res) => {
-  try {
+router.post('/', (req, res, next) => {
   const name = req.body.name
   if (name.length === 0) {throw new Error('未輸入餐廳名稱')}
   const category = req.body.category
@@ -116,20 +91,12 @@ router.post('/', (req, res) => {
     return res.redirect('./restaurants')
   })
   .catch((error) => {
-    console.error(error)
-    req.flash('error', '新增失敗:(')
-    return res.redirect('back')
+    error.errorMessage = '新增失敗:('
+    next(error)
   })
-  } catch (error) {
-      console.error(error)
-      req.flash('error', '新增失敗:(')
-      return res.redirect('back')
-  }
-  
 })
 // 將edit頁面傳送過來的資料更新到資料庫並導向到餐廳細節頁面
-router.put('/:id', (req, res) => {
-  try {
+router.put('/:id', (req, res, next) => {
     const id = req.params.id
     const body = req.body
     if (body.name.length === 0) {throw new Error('未輸入餐廳名稱')}
@@ -147,20 +114,12 @@ router.put('/:id', (req, res) => {
       res.redirect(`/restaurants/${id}`)
     })
     .catch((error) => {
-      console.error(error)
-      req.flash('error', '修改失敗:(')
-      return res.redirect('back')
+      error.errorMessage = '修改失敗:('
+      next(error)
     })
-  } catch (error) {
-      console.error(error)
-      req.flash('error', '修改失敗:(')
-      return res.redirect('back')
-  }
-  
 })
 // 取得req.params.id並刪除資料庫內該項目，然後導向首頁
-router.delete('/:id', (req, res) => {
-  try {
+router.delete('/:id', (req, res, next) => {
     const id = req.params.id
     return Restaurant.destroy({
       where: {id}
@@ -170,16 +129,9 @@ router.delete('/:id', (req, res) => {
       res.redirect('/restaurants')
     })
     .catch((error) => {
-      console.error(error)
-      req.flash('error', '刪除失敗:(')
-      return res.redirect('back')
+      error.errorMessage = '刪除失敗:('
+      next(error)
     })
-  } catch (error) {
-      console.error(error)
-      req.flash('error', '刪除失敗:(')
-      return res.redirect('back')
-  }
-  
 })
 
 module.exports = router

@@ -13,12 +13,7 @@
   <div class="banner"></div>
 </header>
 
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
-{{#if error}}
-<div>{{error}}</div>
-{{/if}}
+{{> message}}
 
 <form action="/restaurants/{{restaurant.id}}?_method=PUT" method="POST">
   <input type="text" placeholder="餐廳名稱" name="name" value="{{restaurant.name}}">
