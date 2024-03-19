@@ -1,5 +1,7 @@
 // 載入需要的工具
 const express = require('express')
+const flash = require('connect-flash')
+const session = require('express-session')
 const app = express()
 const port = 3000
 const { engine } = require('express-handlebars')
@@ -14,6 +16,12 @@ app.set('views', './views')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true}))
 app.use(methodOverride('_method'))
+app.use(session({
+  secret: 'ThisisSecret',
+  resave: false,
+  saveUninitialized:false
+}))
+app.use(flash())
 
 
 // 設定路由
@@ -22,12 +30,31 @@ app.get('/', (req, res) => {
 })
 // 透過Restaurant模型使用findAll找到資料表的所有資料，因為首頁資料不需過多描述，所以只過濾出['id', 'name', 'image', 'category', 'rating']這幾項屬性
 app.get('/restaurants', (req, res) => {
+  const sort = req.query.sort || '1'
+  console.log(sort)
   return Restaurant.findAll({
     attributes: ['id', 'name', 'image', 'category', 'rating'],
     raw: true
   })
   // 找到資料後放入restaurants變數傳送給樣板引擎並渲染首頁畫面
-    .then((restaurants) => res.render('restaurants', { restaurants }))
+    .then((restaurants) => {
+      let filterRestaurants = new Array()
+      if (sort === '2') {
+        for (let i = 97; i <= 122; i++) {
+          for (const restaurant of restaurants){
+            if(restaurant.name.toLowerCase().startsWith(String.fromCharCode(i))) {
+              filterRestaurants.push(restaurant)
+              restaurants.splice(restaurants.indexOf(restaurant), 1)
+            }
+          }
+        }
+        filterRestaurants.push(...restaurants)
+      }
+      if (filterRestaurants.length !== 0) {
+        res.render('restaurants', { restaurants: filterRestaurants, message: req.flash('success') })
+      }
+      else res.render('restaurants', { restaurants, message: req.flash('success') })
+    })
     .catch((err) => res.status(422).json(err))
 })
 
@@ -42,7 +69,7 @@ app.get('/restaurants/:id', (req, res) => {
   return Restaurant.findByPk(id, {
     raw: true
   })
-  .then((restaurant) => res.render('restaurant', { restaurant }))
+  .then((restaurant) => res.render('restaurant', { restaurant, message: req.flash('success') }))
   .catch((err) => console.log(err))
 })
 // 渲染餐廳編輯頁面
@@ -73,7 +100,10 @@ app.post('/restaurants', (req, res) => {
     rating,
     description
   })
-  .then(() => res.redirect('./restaurants'))
+  .then(() => {
+    req.flash('success', '新增成功!')
+    return res.redirect('./restaurants')
+  })
   .catch((err) => console.log(err))
 })
 // 將edit頁面傳送過來的資料更新到資料庫並導向到餐廳細節頁面
@@ -88,7 +118,10 @@ app.put('/restaurants/:id', (req, res) => {
     rating: body.rating,
     description: body.description
   }, { where: { id }})
-  .then(() => res.redirect(`/restaurants/${id}`))
+  .then(() => {
+    req.flash('success', '修改成功!')
+    res.redirect(`/restaurants/${id}`)
+  })
 })
 // 取得req.params.id並刪除資料庫內該項目，然後導向首頁
 app.delete('/restaurants/:id', (req, res) => {
@@ -96,7 +129,10 @@ app.delete('/restaurants/:id', (req, res) => {
   return Restaurant.destroy({
     where: {id}
   })
-  .then(() => res.redirect('/restaurants'))
+  .then(() => {
+    req.flash('success', '刪除成功!')
+    res.redirect('/restaurants')
+  })
 })
 
 app.listen(port, () => {

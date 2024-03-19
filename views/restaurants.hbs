@@ -30,11 +30,20 @@
     </div>
   </div>
 </div>
+<form action="/restaurants" style="display: inline" method="GET">
+<select class="form-select" aria-label="Default select example" name="sort" onchange="javascript:this.form.submit()">
+  <option value="1">默認</option>
+  <option value="2">A-Z</option>
+</select>
+</form>
+
 
 <div class="d-flex justify-content-center">
   <a href="/restaurants/new">create</a>
 </div>
-
+{{#if message}}
+<div>{{message}}</div>
+{{/if}}
 <!-- restaurant list -->
 <div class="container mt-5">
   <div class="row">
