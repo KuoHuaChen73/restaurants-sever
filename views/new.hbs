@@ -12,7 +12,9 @@
 
   <div class="banner"></div>
 </header>
-
+{{#if error}}
+<div>{{error}}</div>
+{{/if}}
 
 
 <form action="/restaurants" method="POST">
